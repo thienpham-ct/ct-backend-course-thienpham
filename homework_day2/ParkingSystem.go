@@ -1,6 +1,4 @@
-package main
-
-import "fmt"
+package homework_day2
 
 type ParkingSystem struct {
 	Big    int
@@ -36,23 +34,4 @@ func (this *ParkingSystem) AddCar(carType int) bool {
 		return added
 	}
 	return false
-}
-
-func main() {
-	carpark1 := Constructor(1, 1, 0)
-	ans := make([]bool, 2)
-
-	ans[0] = carpark1.AddCar(1)
-	ans[1] = carpark1.AddCar(1)
-	fmt.Println(ans)
-
-	//func (this *ParkingSystem) AddCar(carType int) bool {
-	//
-	//}
-
-	/**
-	 * Your ParkingSystem object will be instantiated and called as such:
-	 * obj := Constructor(big, medium, small);
-	 * param_1 := obj.AddCar(carType);
-	 */
 }
