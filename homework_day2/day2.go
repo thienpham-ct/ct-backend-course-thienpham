@@ -1,4 +1,4 @@
-package homework_day2
+package main
 
 import "fmt"
 

@@ -43,14 +43,12 @@ package main
 
 import "fmt"
 
-func swapValues(a, b *float32) {
-	*a, *b = *b, *a
+func swapValues(a, b float32) (float32, float32) {
+	return b, a
 }
 
-func swapAddress(ap, bp *float32) (*float32, *float32) {
-
-	ap, bp = bp, ap
-	return ap, bp
+func swapAddress(ap, bp *float32) {
+	*ap, *bp = *bp, *ap
 }
 
 func main() {
@@ -60,7 +58,7 @@ func main() {
 	fmt.Println("Pointer address of a", &a, "value of a", a)
 	fmt.Println("Pointer address of b", &b, "value of b", b)
 
-	swapValues(&a, &b)
+	a, b = b, a
 
 	fmt.Println("Pointer address of a after value swap", &a, "value of a", a)
 	fmt.Println("Pointer address of b after value swap", &b, "value of b", b)
@@ -70,7 +68,7 @@ func main() {
 	ap = &a
 	bp = &b
 
-	ap, bp = swapAddress(ap, bp)
+	swapAddress(ap, bp)
 
 	fmt.Println("Pointer address of a after address swap", ap, "value of a", *ap)
 	fmt.Println("Pointer address of b after address swap", bp, "value of b", *bp)
