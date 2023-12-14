@@ -14,7 +14,7 @@
 //  its output if you need to.
 // ---------------------------------------------------------
 
-package main
+package mainswap
 
 import "fmt"
 
@@ -22,7 +22,7 @@ type computer struct {
 	brand string
 }
 
-func main() {
+func mainswap() {
 	// create a nil pointer with the type of pointer to a computer
 	var apple_p *computer
 	// compare the pointer variable to a nil value, and say it's nil

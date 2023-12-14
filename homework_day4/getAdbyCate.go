@@ -1,4 +1,4 @@
-package main
+package homework_day4
 
 import (
 	"context"
@@ -41,7 +41,7 @@ type client struct {
 
 type Option func(*client)
 
-func main() {
+func homework_day4() {
 	log := log.New(os.Stdout, "PREFIX: ", log.LstdFlags)
 	client := NewClient(BaseUrl, 2, log)
 	ctx := context.TODO()

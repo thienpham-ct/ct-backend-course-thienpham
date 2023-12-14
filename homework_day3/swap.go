@@ -39,7 +39,7 @@
 //
 // ---------------------------------------------------------
 
-package main
+package mainswap
 
 import "fmt"
 
