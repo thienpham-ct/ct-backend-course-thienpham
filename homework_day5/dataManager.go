@@ -1,13 +1,13 @@
+package homework_day5
 // You can edit this code!
 // Click here and start typing.
-package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"sync"
-	"os"
+"encoding/json"
+"fmt"
+"io/ioutil"
+"os"
+"sync"
 )
 
 // User represents an entity with ID and Name fields.
@@ -18,6 +18,7 @@ type User struct {
 
 // DataManager encapsulates CRUD operations on the in-memory storage.
 type DataManager struct {
+	mu      sync.Mutex
 	Storage map[int]User
 }
 
@@ -51,7 +52,12 @@ func (dm *DataManager) LoadDataFromFile(filename string) error {
 func (dm *DataManager) SaveDataToFile(filename string) error {
 	//TODO #1 implement
 	f, err := os.Create(filename)
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+
+		}
+	}(f)
 
 	encoder := json.NewEncoder(f)
 	err = encoder.Encode(dm.Storage)
@@ -65,16 +71,24 @@ func (dm *DataManager) SaveDataToFile(filename string) error {
 // Create adds a new User to the in-memory storage.
 func (dm *DataManager) Create(name string) error {
 	//TODO #2 implement: generate IDs in an incremental manner
-
+	dm.mu.Lock()
+	defer dm.mu.Unlock()
+	maxIndex := 0
+	for i := range dm.Storage {
+		if i > maxIndex {
+			maxIndex = i
+		}
+	}
+	dm.Storage[maxIndex+1] = User{ID: maxIndex + 1, Name: name}
 	return nil
 }
 
 // Read retrieves and prints the details of a User based on its ID.
 func (dm *DataManager) Read(id int) (User, error) {
 	//TODO #3 implement
-	user,found := dm.Storage[id]
+	user, found := dm.Storage[id]
 	if found {
-		fmt.Println("User ",id," found: ", user)
+		fmt.Println("User ", id, " found: ", user)
 		return user, nil
 	} else {
 		return User{}, fmt.Errorf("UserID %v not exists", user.ID)
@@ -84,6 +98,8 @@ func (dm *DataManager) Read(id int) (User, error) {
 // Update updates the details of an existing User based on its ID.
 func (dm *DataManager) Update(user User) error {
 	//TODO #4 implement
+	dm.mu.Lock()
+	defer dm.mu.Unlock()
 	_, found := dm.Storage[user.ID]
 	if found {
 		dm.Storage[user.ID] = user
@@ -96,9 +112,25 @@ func (dm *DataManager) Update(user User) error {
 
 // Delete removes a User from the in-memory storage based on its ID.
 func (dm *DataManager) Delete(id int) error {
+	dm.mu.Lock()
+	defer dm.mu.Unlock()
 	//TODO #5 implement: delete and save it to data_deleted.json
+	targetUser, found := dm.Storage[id]
+	deletedDm := DataManager{Storage: map[int]User{id: targetUser}}
+	if found {
+		// save to data_deleted.json
+		err := deletedDm.SaveDataToFile("data_deleted.json")
+		if err != nil {
+			panic("fail to save data_deleted.json")
+		}
 
-	panic("error ")
+		// delete user
+		delete(dm.Storage, id)
+
+	} else {
+		panic("error when trying delete user")
+	}
+	return nil
 }
 
 /*
@@ -119,7 +151,7 @@ func main() {
 	dataManager := NewDataManager()
 
 	// Load initial data from a file
-	if err := dataManager.LoadDataFromFile("data.json"); err != nil {
+	if err := dataManager.LoadDataFromFile("sample.json"); err != nil {
 		fmt.Println("Error loading data:", err)
 		return
 	}
@@ -145,7 +177,7 @@ func main() {
 	wg.Add(1)
 	go func() {
 		wg.Done()
-		user := User{ID: 100, Name: "This is new name"}
+		user := User{ID: 2, Name: "This is new name"}
 		if err := dataManager.Update(user); err != nil {
 			panic("dataManager.Update: " + err.Error())
 		}
@@ -170,3 +202,4 @@ func main() {
 	wg.Wait()
 	fmt.Println("------- DONE ------")
 }
+

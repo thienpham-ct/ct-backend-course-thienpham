@@ -14,7 +14,7 @@
 //  its output if you need to.
 // ---------------------------------------------------------
 
-package mainswap
+package homework_day3
 
 import "fmt"
 

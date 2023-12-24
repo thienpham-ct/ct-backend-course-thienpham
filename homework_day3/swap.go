@@ -39,7 +39,7 @@
 //
 // ---------------------------------------------------------
 
-package mainswap
+package homework_day3
 
 import "fmt"
 

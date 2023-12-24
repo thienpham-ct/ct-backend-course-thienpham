@@ -1,4 +1,4 @@
-package main
+package homework_day4
 
 import (
 	"bufio"
