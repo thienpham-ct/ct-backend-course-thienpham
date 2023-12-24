@@ -1,1 +1,0 @@
-# ct-backend-course-thienpham
