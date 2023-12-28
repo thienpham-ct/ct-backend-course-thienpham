@@ -1,16 +1,11 @@
-// You can edit this code!
-// Click here and start typing.
 package main
 
-import "fmt"
+import (
+	"awesomeProject1/server"
+	"fmt"
+)
 
 func main() {
-	fmt.Println(variadicSum(1, 2, 3, 4, 45))
-}
-
-func variadicSum(nums ...int) (sum int) {
-	for _, v := range nums {
-		sum += v
-	}
-	return
+	fmt.Println("START SERVER ...")
+	server.Server()
 }

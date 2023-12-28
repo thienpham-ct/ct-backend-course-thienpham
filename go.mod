@@ -1,5 +1,8 @@
-module ct-backend-course-baonguyen
+module awesomeProject1
 
 go 1.20
 
-require github.com/golang-jwt/jwt/v4 v4.5.0
+require (
+	github.com/felixge/httpsnoop v1.0.4
+	github.com/golang-jwt/jwt/v4 v4.5.0
+)
